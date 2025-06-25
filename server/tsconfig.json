@@ -5,8 +5,7 @@
       "esModuleInterop": true,
       "moduleResolution": "Node",
       "strict": true,
-      "rootDir": "server",
-      "outDir": "dist",
+      "outDir": "../dist",
       "lib": ["ES2020", "ESNext"]
     },
     "include": ["./**/*.ts"]

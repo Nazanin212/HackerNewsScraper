@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "dev": "ts-node server.ts",
-        "build": "tsc",
+        "build": "tsc -p server/tsconfig.json",
         "start": "node dist/server.js"
     },
     "devDependencies": {

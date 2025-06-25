@@ -15,7 +15,7 @@ const PORT = 4000;
 
 // Basic route
 app.get('/', (_req, res) => {
-  res.send('✅ Test test test test test!');
+  res.send('Welcome to my shitty website');
 });
 
 // Start the server

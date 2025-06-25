@@ -3,10 +3,11 @@ import express from 'express';
 /*
 Routes
 - Validate first 100 (Can have option to pick new or next?)
-- 
-- Scheduled scrape of article titles
-- Top Stories Viewer
-- Keyword Tracker
+- Keyword Search
+- Top 5 Stories Viewer
+
+- Test results
+- History viewer (Later)
 */
 
 const app = express();
@@ -18,6 +19,8 @@ app.get('/', (_req, res) => {
 });
 
 // Start the server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+const port = parseInt(process.env.PORT || '3000', 10);
+const host = '0.0.0.0';
+app.listen(port, host, () => {
+  console.log(`Server running on http://${host}:${port}`);
 });

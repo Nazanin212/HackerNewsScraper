@@ -1,26 +1,32 @@
 import express from 'express';
-
-/*
-Routes
-- Validate first 100 (Can have option to pick new or next?)
-- Keyword Search
-- Top 5 Stories Viewer
-
-- Test results
-- History viewer (Later)
-*/
+import cors from 'cors';
+import topStoriesRouter from './routes/topStories';
+import hackerNewsTests from './routes/hackerNewsTests';
 
 const app = express();
-const PORT = 4000;
+const PORT = parseInt(process.env.PORT || '4000', 10);
+const HOST = '0.0.0.0';
 
-// Basic route
-app.get('/', (_req, res) => {
-  res.send('Welcome to my shitty website');
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// API routes
+app.use('/top-stories', topStoriesRouter);
+app.use('/tests', hackerNewsTests);
+
+//console.log("✅ Routers loaded:");
+//console.log(" - /tests ->", typeof hackerNewsTests);
+
+// Start server
+app.listen(PORT, HOST, () => {
+  console.log(`🚀 Server running at http://${HOST}:${PORT}`);
 });
 
-// Start the server
-const port = parseInt(process.env.PORT || '3000', 10);
-const host = '0.0.0.0';
-app.listen(port, host, () => {
-  console.log(`Server running on http://${host}:${port}`);
-});
+// Serve React frontend build (for production)
+//app.use(express.static(path.join(__dirname, '../client/build')));
+
+// React Router fallback route
+//app.get('*', (_req, res) => {
+//  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+//});

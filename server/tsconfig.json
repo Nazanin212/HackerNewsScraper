@@ -1,13 +1,15 @@
 {
-    "compilerOptions": {
-      "target": "ES2020",
-      "module": "CommonJS",
-      "esModuleInterop": true,
-      "moduleResolution": "Node",
-      "strict": true,
-      "outDir": "../dist",
-      "lib": ["ES2020", "ESNext"]
-    },
-    "include": ["./**/*.ts"]
-  }
-  
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "skipLibCheck": true,
+    "strict": true,
+    "outDir": "../dist",
+    "lib": ["ES2020", "ESNext", "DOM"],
+    "resolveJsonModule": true,
+    "types": ["node", "express"]
+  },
+  "include": ["./**/*.ts"]
+}

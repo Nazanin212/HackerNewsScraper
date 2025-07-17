@@ -1,0 +1,163 @@
+.dashboard {
+  background-color: transparent;
+  min-height: 100vh;
+}
+
+/* Test layout */
+.test-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.test-card {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-left: 0.5rem solid transparent;
+  border-radius: 6px;
+  padding: 2rem;
+  box-shadow: 0 2px 6px #ffffff9a;
+  transition: border-left-color 0.3s  ease;
+}
+
+.test-card.passed {
+  border-left-color: var(--color-success);
+  background-color: #f0fdf4;
+}
+
+.test-card.failed {
+  border-left-color: var(--color-error);
+  background-color: #fef2f2;
+}
+
+/* Header row */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  color: var(--color-primary);
+}
+
+.header-left {
+  flex: 1;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.description {
+  font-style: italic;
+  color: var(--color-muted);
+}
+
+/* Status badge */
+.status {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.status::before {
+  content: '';
+  margin-right: 0.4rem;
+  font-size: 1rem;
+}
+
+.test-card.passed .status {
+  color: var(--color-success);
+}
+.test-card.failed .status {
+  color: var(--color-error);
+}
+
+/* DARK MODE SUPPORT */
+body.dark .test-card {
+  background-color: var(--color-surface);
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.05);
+  color: var(--color-text);
+}
+
+body.dark .test-card.passed {
+  background-color: rgba(34, 197, 94, 0.1); /* soft green */
+  border-left-color: var(--color-success);
+}
+
+body.dark .test-card.failed {
+  background-color: rgba(244, 63, 94, 0.1); /* soft red */
+  border-left-color: var(--color-error);
+}
+
+body.dark .description {
+  color: var(--color-muted);
+}
+
+body.dark .header-left {
+  color: var(--color-primary);
+}
+
+
+/***************************/
+/*          TODO           */
+/***************************/
+
+button {
+  padding: 0.4rem 0.75rem;
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+
+.run-btn {
+  background-color: black;
+  color: white;
+}
+.run-btn:hover:not(:disabled) {
+  background-color: #1565c0;
+}
+
+.expand-toggle {
+  background: none;
+  color: #333;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.stream-output {
+  background: #1e1e1e;
+  color: #00ff9d;
+  border-top: 1px solid #333;
+  margin-top: 1rem;
+  padding: 1rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.live-log {
+  white-space: pre-wrap;
+}
+
+/* Streaming status */
+.running-indicator {
+  color: #f39c12;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.stream-complete {
+  margin-top: 0.75rem;
+  color: #4caf50;
+  font-weight: bold;
+}

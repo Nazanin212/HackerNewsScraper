@@ -1,0 +1,51 @@
+/* Full page */
+.about-page {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 5rem;
+  margin: 0 auto;
+}
+
+/* About section */
+.about-container {
+  flex: 2;
+  line-height: 1.7;
+  color: var(--color-text);
+  text-align: left;
+}
+
+/* List Layout */
+.about-container ul {
+  padding-left: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.about-container li {
+  margin-bottom: 0.5rem;
+}
+
+/* Logs section */
+.logs {
+  flex: 1;
+  font-size: 0.95rem;
+  color: var(--color-muted);
+  max-width: 30%;
+}
+
+.logs a {
+  color: var(--color-muted);
+}
+
+.log-date {
+  font-weight: 600;
+}
+
+.logs ul {
+  list-style: circle inside;
+}
+
+.logs li {
+  padding-bottom: 0.5rem;
+}

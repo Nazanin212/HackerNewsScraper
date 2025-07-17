@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./TestDashboard.css";
 
 interface TestResult {
@@ -11,8 +11,8 @@ interface TestResult {
 }
 
 const TestDashboard = () => {
-  const [tests, _setTests] = useState<TestResult[]>([]);
-  const [expandedTestId, _setExpandedTestId] = useState<string | null>(null);
+  const [tests] = useState<TestResult[]>([]);
+  const [expandedTestId] = useState<string | null>(null);
 
   return (
     <div className="dashboard">

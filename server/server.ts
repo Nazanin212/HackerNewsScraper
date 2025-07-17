@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
 import topStoriesRouter from './routes/topStories';
 import hackerNewsTests from './routes/hackerNewsTests';
 
@@ -23,10 +24,11 @@ app.listen(PORT, HOST, () => {
   console.log(`🚀 Server running at http://${HOST}:${PORT}`);
 });
 
+
 // Serve React frontend build (for production)
-//app.use(express.static(path.join(__dirname, '../client/build')));
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 // React Router fallback route
-//app.get('*', (_req, res) => {
-//  res.sendFile(path.join(__dirname, '../client/build/index.html'));
-//});
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});

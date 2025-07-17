@@ -11,53 +11,8 @@ interface TestResult {
 }
 
 const TestDashboard = () => {
-  const [tests, setTests] = useState<TestResult[]>([]);
-  const [expandedTestId, setExpandedTestId] = useState<string | null>(null);
-  const [isReloading, setIsReloading] = useState<boolean>(false);
-  const [runningTestId, setRunningTestId] = useState<string | null>(null);
-
-  const fetchTests = () => {
-    setIsReloading(true);
-    fetch("/tests")
-      .then((res) => res.json())
-      .then((data) => {
-        setTests(data);
-        localStorage.setItem("cachedTests", JSON.stringify(data));
-      })
-      .catch((err) => {
-        console.error("Failed to fetch tests:", err);
-        setTests([]);
-      })
-      .finally(() => setIsReloading(false));
-  };  
-
-  // Run a single test from the backend
-  const runTest = async (testId: string) => {
-    setRunningTestId(testId);
-    try {
-      const res = await fetch(`/tests/run/${testId}`, { method: "POST" });
-      const updatedTest = await res.json();
-
-      setTests((prev) =>
-        prev.map((t) => (t.id === testId ? updatedTest : t))
-      );
-    } catch (err) {
-      console.error(`Failed to run test ${testId}`, err);
-    } finally {
-      setRunningTestId(null);
-    }
-  };
-
-  const toggleExpand = (testId: string) => {
-    setExpandedTestId((prev) => (prev === testId ? null : testId));
-  };
-
-  useEffect(() => {
-    const cachedTests = localStorage.getItem("cachedTests");
-    if (cachedTests) {
-      setTests(JSON.parse(cachedTests));
-    }
-  }, []);  
+  const [tests, _setTests] = useState<TestResult[]>([]);
+  const [expandedTestId, _setExpandedTestId] = useState<string | null>(null);
 
   return (
     <div className="dashboard">

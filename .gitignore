@@ -14,6 +14,8 @@ server/node_modules
 /client/build
 
 # misc
+todo.md
+
 .DS_Store
 .env.local
 .env.development.local

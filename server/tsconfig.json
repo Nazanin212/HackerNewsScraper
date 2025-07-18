@@ -6,7 +6,7 @@
     "moduleResolution": "Node",
     "skipLibCheck": true,
     "strict": true,
-    "outDir": "../dist",
+    "outDir": "./dist",
     "lib": ["ES2020", "ESNext", "DOM"],
     "resolveJsonModule": true,
     "types": ["node", "express"]

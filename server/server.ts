@@ -16,19 +16,15 @@ app.use(express.json());
 app.use('/top-stories', topStoriesRouter);
 app.use('/tests', hackerNewsTests);
 
-//console.log("✅ Routers loaded:");
-//console.log(" - /tests ->", typeof hackerNewsTests);
-
-// Start server
-app.listen(PORT, HOST, () => {
-  console.log(`🚀 Server running at http://${HOST}:${PORT}`);
-});
-
-
 // Serve React frontend build (for production)
 app.use(express.static(path.join(__dirname, '../client/build')));
 
 // React Router fallback route
 app.get('*', (_req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
+
+// Start server
+app.listen(PORT, HOST, () => {
+  console.log(`🚀 Server running at http://${HOST}:${PORT}`);
 });

@@ -6,6 +6,7 @@
         "install-deps": "npm install",
         "dev": "ts-node server/server.ts",
         "build": "npm run build-client && npm run build-server",
+        "test": "npx playwright install",
         "build-server": "tsc -p server/tsconfig.json",
         "build-client": "cd client && npm install && npm run build",
         "start": "node dist/server.js"

@@ -18,9 +18,7 @@ function App() {
   const renderContent = () => {
     switch (activeTab) {
       case 'About':
-        return <About />;
-      case 'Top Stories':
-        return <TopStories />;
+        return <About />;        
       case 'Test Dashboard':
         return <TestDashboard />;
       case 'Keyword Search':
@@ -64,19 +62,9 @@ function App() {
       <main className="app-body">
         <section className="tab-content">
           {!activeTab ? (
-            <div className="welcome-message">
-              <h1>👋 Welcome!</h1>
-                <p>
-                  This demo is my first end-to-end deployment, built as a way to dive into full-stack development after wanting to explore it for a long time. It's been a hands-on opportunity to build something real while learning by doing.
-                </p>
-                <h4>Explore the Project</h4>
-                  <p>
-                    Take a look around, the Top Stories tab pulls live Hacker News data, while the Test Dashboard shows automated test results powered by Playwright.
-                  </p>
-                  <p>
-                    You can also visit the About section for technical details and check the logs for development updates and what's coming next.
-                  </p>
-          </div>          
+          <div>
+            <TopStories />;
+          </div>
           ) : (
             renderContent()
           )}

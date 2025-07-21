@@ -7,7 +7,7 @@ interface TabNavigationProps {
 }
 
 const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, setActiveTab }) => {
-  const tabs = ['About', 'Top Stories', 'Test Dashboard', '🚧 Keyword Search 🚧', '🚧 Point Dashboard 🚧', '🚧 Dev Sandbox 🚧'];
+  const tabs = ['About', 'Test Dashboard', '🚧 Keyword Search 🚧', '🚧 Point Dashboard 🚧', '🚧 Dev Sandbox 🚧'];
 
   return (
     <div className="tab-nav">

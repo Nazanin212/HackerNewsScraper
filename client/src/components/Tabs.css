@@ -1,33 +1,37 @@
 /* Tab navigation container */
 .tab-nav {
-display: flex;
-flex-wrap: wrap;
-gap: 0.5rem;
-align-items: center;
-padding: 0.5rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
 }
 
 /* Tab buttons */
 .tab-button {
-padding: 0.5rem 1rem;
-font-size: 0.95rem;
-font-weight: 600;
-line-height: 2rem;
-border-radius: 1rem;
-background: transparent;
-color: var(--color-text);
-transition: all 0.3s ease-in-out;
+    box-sizing: border-box;
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 2rem;
+    border-radius: 1rem;
+    background: transparent;
+    color: var(--color-text);
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: none;
+    min-width: 100px;
+    text-align: center;
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
 /* Hover style */
 .tab-button:hover {
-background: var(--color-border);
-color: var(--color-primary);
+    background: var(--color-border);
+    color: var(--color-primary);
 }
 
 /* Active tab */
 .tab-button.active {
 background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
 color: var(--color-surface);
-box-shadow: 0 0.125rem 0.5rem rgba(108, 62, 144, 0.25);
 }

@@ -81,7 +81,7 @@ const TopStories: React.FC = () => {
         </a>. I do not own or represent it. This project is for educational and demonstration purposes only.
       </p>
     </div>
-  );
+  )
 };
 
 export default TopStories;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import "./TestDashboard.css";
 
 interface TestResult {
@@ -7,53 +7,65 @@ interface TestResult {
   description: string;
   status: "Passed" | "Failed";
   lastRun: string;
-  errorOutput?: string;
+  details: string;
 }
 
 const TestDashboard = () => {
-  const [tests] = useState<TestResult[]>([]);
-  const [expandedTestId] = useState<string | null>(null);
+  const [tests, setTests] = useState<TestResult[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchTests = async () => {
+      try {
+        const res = await fetch("/tests"); 
+        if (!res.ok) throw new Error("Failed to fetch test data");
+        const data = await res.json();
+        setTests(data); // <-- this updates the state
+      } catch (err: any) {
+        setError(err.message || "Unknown error");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTests();
+  }, []);
 
   return (
     <div className="dashboard">
       <div className="dashboard-header">
         <h1>Test Dashboard</h1>
-        {/*<button
-          className={`reload-btn ${isReloading ? "loading" : ""}`}
-          onClick={fetchTests}
-        >
-          {isReloading ? <span className="spinner" /> : "🔄 Reload Tests"}
-        </button>*/}
       </div>
 
-      <div className="test-list">
-        {tests.map((test) => (
-          <div
-            key={test.id}
-            className={`test-card ${test.status.toLowerCase()}`}
-          >
-            <div className="card-header">
-              <div className="header-left">{test.name}</div>
-            </div>
-
-            {/*<p className="description">{test.description}</p>*/}
-            <p>
-              <strong>Last Run:</strong>{" "}
-              {new Date(test.lastRun).toLocaleString()}
-            </p>
-            <p>
-              <strong>Status:</strong>{" "}
-              <span className="status">{test.status}</span>
-            </p>
-
-            {expandedTestId === test.id && test.errorOutput && (
-              <div className="stream-output">
-                <pre className="live-log">{test.errorOutput}</pre>
+      {loading ? (
+        <p>Loading tests...</p>
+      ) : error ? (
+        <p className="error">Error: {error}</p>
+      ) : tests.length === 0 ? (
+        <p>No tests available.</p>
+      ) : (
+        <div className="test-list">
+          {tests && tests.map((test) => (
+            <div
+              key={test.id}
+              className={`test-card ${test.status.toLowerCase()}`}
+            >
+              <div className="card-header">
+                <div className="header-left">{test.name}</div>
               </div>
-            )}
-          </div>
-        ))}
-      </div>
+              <p>
+                <strong>Last Run:</strong>{" "}
+                {new Date(test.lastRun).toLocaleString()}
+              </p>
+              <p>
+                <strong>Status:</strong>{" "}
+                <span className="status">{test.status}</span>
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

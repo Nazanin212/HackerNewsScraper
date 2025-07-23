@@ -63,7 +63,7 @@ function App() {
         <section className="tab-content">
           {!activeTab ? (
           <div>
-            <TopStories />;
+            <TopStories />
           </div>
           ) : (
             renderContent()

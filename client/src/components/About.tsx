@@ -67,9 +67,7 @@ const About: React.FC = () => {
           </p>
       </section>
 
-      <div className="logs">
-       < Logs />
-      </div>
+
     </div>
   );
 };

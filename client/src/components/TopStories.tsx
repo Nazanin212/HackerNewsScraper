@@ -78,7 +78,7 @@ const TopStories: React.FC = () => {
           rel="noopener noreferrer"
         >
           Hacker News
-        </a>. I do not own or represent it. This project is for educational and demonstration purposes only.
+        </a> I do not own or represent it. This project is for educational and demonstration purposes only.
       </p>
     </div>
   )

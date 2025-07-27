@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import "./TestDashboard.css";
 
 interface TestResult {
-  id: string;
   name: string;
   description: string;
   status: "Passed" | "Failed";
@@ -21,7 +20,8 @@ const TestDashboard = () => {
         const res = await fetch("/tests"); 
         if (!res.ok) throw new Error("Failed to fetch test data");
         const data = await res.json();
-        setTests(data); // <-- this updates the state
+        console.log(data);
+        setTests(data);
       } catch (err: any) {
         setError(err.message || "Unknown error");
       } finally {
@@ -46,21 +46,24 @@ const TestDashboard = () => {
         <p>No tests available.</p>
       ) : (
         <div className="test-list">
-          {tests && tests.map((test) => (
+          {tests && tests.map((test, index) => (
             <div
-              key={test.id}
+              key={index}
               className={`test-card ${test.status.toLowerCase()}`}
             >
               <div className="card-header">
                 <div className="header-left">{test.name}</div>
               </div>
               <p>
+                <span>{test.description}</span>
+              </p>
+              <p>
                 <strong>Last Run:</strong>{" "}
                 {new Date(test.lastRun).toLocaleString()}
               </p>
               <p>
-                <strong>Status:</strong>{" "}
-                <span className="status">{test.status}</span>
+                <strong>Details:</strong>{" "}
+                <span>{test.details}</span>
               </p>
             </div>
           ))}

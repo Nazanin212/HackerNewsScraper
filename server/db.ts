@@ -33,7 +33,7 @@ export function saveTestResult(result: TestResult) {
 }
 
 export function getCachedTestResults(): TestResult[] {
-  return db.prepare('SELECT * FROM test_results ORDER BY lastRun DESC').all() as TestResult[];
+  return db.prepare('SELECT * FROM test_results').all() as TestResult[];
 }
 
 export default db;

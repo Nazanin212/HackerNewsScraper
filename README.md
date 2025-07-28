@@ -4,7 +4,6 @@ Scrapes the latest stories from [Hacker News](https://news.ycombinator.com/) and
 
 A side project to explore end-to-end development and automated website testing using Playwright.
 
----
 
 ## Getting Started
 
@@ -14,7 +13,6 @@ A side project to explore end-to-end development and automated website testing u
 npm install
 ```
 
----
 
 ### Start the Frontend
 
@@ -24,7 +22,6 @@ npm start
 
 > Runs the frontend development server (typically on `http://localhost:3000`).
 
----
 
 ### Start the Backend
 
@@ -34,7 +31,6 @@ npm run dev
 
 > Runs the backend server (`http://localhost:4000`).
 
----
 
 ## Automated Testing with Playwright
 
@@ -44,7 +40,6 @@ To install Playwright:
 npx playwright install
 ```
 
----
 
 ## Tech Stack
 
@@ -52,7 +47,6 @@ npx playwright install
 - **Backend:** Node.js / Express, SQLite
 - **Testing:** Playwright
 
----
 
 ## Project Structure
 

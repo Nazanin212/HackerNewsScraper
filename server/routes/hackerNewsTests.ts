@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { chromium, request, Browser, Page } from 'playwright';
+import { chromium, Browser, Page, request as playwrightRequest} from 'playwright';
 import { saveTestResult, getCachedTestResults, TestResult } from '../db';
 
 const router = express.Router();
@@ -17,6 +17,7 @@ async function checkNewestArticlesSorted(browser: Browser): Promise<TestResult> 
 	const test_id = 			'new-sort-check';
 	const test_name = 			'New Articles';
 	const test_description = 	'Verify exactly the first 100 newest articles are sorted';
+	console.log(`Running ${test_id} ...`)
 
 	const page: Page = await browser.newPage();
 
@@ -32,17 +33,19 @@ async function checkNewestArticlesSorted(browser: Browser): Promise<TestResult> 
 			.slice(0, 100)
 			.map(t => (t ? new Date(t).getTime() : 0));
 
-		const isSorted = parsedTimes.every((time, i) => i === 0 || time <= parsedTimes[i - 1]);
+		const passed = parsedTimes.every((time, i) => i === 0 || time <= parsedTimes[i - 1]);
 
+		console.log(`${test_id} returned: ${passed}!`)
 		return {
 			id: test_id,
 			name: test_name,
 			description: test_description,
-			status: isSorted ? 'Passed' : 'Failed',
+			status: passed ? 'Passed' : 'Failed',
 			lastRun: new Date().toISOString(),
-			details: isSorted ? 'Articles are sorted correctly' : 'Articles are not sorted',
+			details: passed ? 'Articles are sorted correctly' : 'Articles are not sorted',
 		};
 	} catch (e) {
+		console.log(`${test_id} errored: ${(e as Error).message}}!`)
 		return {
 			id: test_id,
 			name: test_name,
@@ -61,6 +64,7 @@ async function testNavFlow(browser: Browser): Promise<TestResult> {
 	const test_id = 			'navigation-flow';
 	const test_name = 			'Navigation Flow Test';
 	const test_description = 	'Verify you can click the first article and comments';
+	console.log(`Running ${test_id} ...`)
 
 	const page = await browser.newPage();
 	let currentUrl: string = "";
@@ -95,18 +99,20 @@ async function testNavFlow(browser: Browser): Promise<TestResult> {
 
 		currentUrl = page.url();
 		if (!currentUrl.includes('news.ycombinator.com/item?id=')) {
-			throw new Error('Unexpected Comments');
+			throw new Error('Could not click on comments');
 		}
 
+		console.log(`${test_id} returned: passed!`)
 		return {
 			id: test_id,
 			name: test_name,
 			description: test_description,
 			status: 'Passed',
 			lastRun: new Date().toISOString(),
-			details: 'Ran Successfully',
+			details: 'Basic navigation workflow ran sucessfully',
 			};
 	} catch (e) {
+		console.log(`${test_id} errored: ${(e as Error).message}}!`)
 		return {
 			id: test_id,
 			name: test_name,
@@ -125,22 +131,25 @@ async function testPerformance(browser: Browser): Promise<TestResult> {
 	const test_id = 			'performance-smoke';
 	const test_name = 			'Performance Smoke Test';
 	const test_description = 	'Verify page loads within 2 seconds';
+	console.log(`Running ${test_id} ...`)
 
 	const page = await browser.newPage();
 	try {
 		const start = Date.now();
 		await page.goto('https://news.ycombinator.com');
 		const ms = Date.now() - start;
-		const passed = ms < 2000;
+		if (ms > 2000) throw new Error('Page took longer than 2ms to load')
+		console.log(`${test_id} returned: passed!`)
 		return {
 			id: test_id,
 			name: test_name,
 			description: test_description,
-			status: passed ? 'Passed' : 'Failed',
+			status: 'Passed',
 			lastRun: new Date().toISOString(),
 			details: `Load time: ${ms}ms`,
 			};
 	} catch (e) {
+		console.log(`${test_id} errored: ${(e as Error).message}}!`)
 		return {
 			id: test_id,
 			name: test_name,
@@ -160,8 +169,9 @@ async function API_GetTopStories(): Promise<TestResult> {
 	const test_id = 			'api-top-stories';
 	const test_name = 			'GET API Top Stories';
 	const test_description = 	'Verify HackerNews GET API works for correctly for top stories';
+	console.log(`Running ${test_id} ...`)
 
-	const apiContext = await request.newContext();
+	const apiContext = await playwrightRequest.newContext();
 
 	try {
 		// GET all the top stories 
@@ -175,22 +185,35 @@ async function API_GetTopStories(): Promise<TestResult> {
 			`https://hacker-news.firebaseio.com/v0/item/${firstStoryId}.json`);
 		const story = await storyRes.json();
 
-		// Verify json is valid
-		const validID = firstStoryId === story.id;
-		const hasTitle = story.title.length > 0;
-		const hasBy = story.by.length > 0;
-		const hasUrl = story.url.length > 0;
-		const passed = validID && hasTitle && hasBy && hasUrl;
+		// Verify json is valid with logging info
+		let details = '';
+		let passed = true;
+		if (firstStoryId !== story.id) {
+			details = details + 'Story ID mismatch ';
+			passed = false;
+		} if (!story.title || story.title.length === 0) {
+			details = details + 'Missing or empty title ';
+			passed = false;
+		} if (!story.by || story.by.length === 0) {
+			details = details + 'Missing or empty author ';
+			passed = false;
+		} if (!story.url || story.url.length === 0) {
+			details = details + 'Missing or empty URL ';
+			passed = false;
+		}
+		if (passed === false) throw new Error(details);
 
+		console.log(`${test_id} returned: passed!`)
 		return {
 			id: test_id,
 			name: test_name,
 			description: test_description,
-			status: passed ? 'Passed' : 'Failed',
+			status: 'Passed',
 			lastRun: new Date().toISOString(),
-			details: `validID: ${validID} | hasTitle: ${hasTitle} | hasBy: ${hasBy} | hasUrl: ${hasUrl}`,
+			details: 'Test run successfully',
 			};
 	} catch (e) {
+		console.log(`${test_id} errored: ${(e as Error).message}}!`)
 		return {
 			id: test_id,
 			name: test_name,
@@ -204,54 +227,61 @@ async function API_GetTopStories(): Promise<TestResult> {
 
 
 // Run all tests (no streaming)
-async function runAllTests(onProgress?: (message: string) => void): Promise<TestResult[]> {
+async function runAllTests(onProgress?: (message: string) => void) {
+	console.log("	Running all tests ...")
     const browser = await launchBrowser();
   
     try {
-      const results: TestResult[] = [];
-  
-      const tests = [
-        checkNewestArticlesSorted,
-        testNavFlow,
-        testPerformance,
-      ];
-  
-      for (const testFn of tests) {
-        const result = await testFn(browser);
-        saveTestResult(result); // Cache it
-        results.push(result);
-        onProgress?.(`Completed test: ${result.name}`);
-      }
+		const results: TestResult[] = [];
 
-	  const apiTestResults = await API_GetTopStories();
-	  results.push(apiTestResults);
-  
-      return results;
-    } finally {
-      await browser.close();
+		const tests = [
+			checkNewestArticlesSorted,
+			testNavFlow,
+			testPerformance,
+		];
+
+		for (const testFn of tests) {
+			const result = await testFn(browser);
+			saveTestResult(result); // Cache it
+			results.push(result);
+			onProgress?.(`Completed test: ${result.name}`);
+		}
+
+		const apiTestResults = await API_GetTopStories();
+		saveTestResult(apiTestResults);
+		results.push(apiTestResults);
+		onProgress?.(`Completed test: ${apiTestResults.name}`);
+
+		console.log(`	Tests complete, results cached!`);
+		return results;
+    } catch (error) {
+		console.error('There was as issue', error);
+	} finally {
+		await browser.close();
     }
-  } 
+}
 
 // Get all test results (runs all tests fresh)
 router.get('/', async (_req: Request, res: Response) => {
     try {
-      const now = Date.now();
-      const cachedResults = getCachedTestResults();
-  
-      if (cachedResults.length > 0 && now - lastCacheTime < CACHE_TTL) {
-        console.log('Serving cached test results');
-        return res.json(cachedResults);
-      }
-  
-      console.log('Cache expired or empty, running tests fresh');
-      const results = await runAllTests();
-      lastCacheTime = now;
-      return res.json(results);
-  
-    } catch (error) {
-      console.error('Failed to run or get tests:', error);
-      res.status(500).json({ error: 'Failed to run tests' });
-    }
-  });  
+		console.log("[ROUTES] Checking cashed test results ...")
+		const now = Date.now();
+		const cachedResults = getCachedTestResults();
+	
+		if (cachedResults.length > 0 && now - lastCacheTime < CACHE_TTL) {
+			console.log('	Serving cached test results');
+			return res.json(cachedResults);
+		}
+	
+		console.log('[ROUTES] Cache expired or empty, running tests fresh');
+		const results = await runAllTests();
+		lastCacheTime = now;
+		return res.json(results);
+	} 
+	catch (error) {
+		console.error('[ROUTES] Failed to run or get tests:', error);
+		res.status(500).json({ error: 'Failed to run tests' });
+	}
+});  
 
 export default router;

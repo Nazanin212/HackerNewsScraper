@@ -1,15 +1,74 @@
-This project was created as a hands-on learning tool to explore end-to-end development and deployment workflows.
+# Hacker News Scraper +
 
-# Install Dependencies
+Scrapes the latest stories from [Hacker News](https://news.ycombinator.com/) and displays them in a clean UI. 
+
+A side project to explore end-to-end development and automated website testing using Playwright.
+
+---
+
+## Getting Started
+
+### Install Dependencies
+
+```bash
 npm install
+```
 
-# Start the frontend
+---
+
+### Start the Frontend
+
+```bash
 npm start
+```
 
-# Start the backend
+> Runs the frontend development server (typically on `http://localhost:3000`).
+
+---
+
+### Start the Backend
+
+```bash
 npm run dev
+```
 
-# Playwright Tests
-The playwright tests are located in server > routes > hackerNewsTests.ts
+> Runs the backend server (`http://localhost:4000`).
 
-Test results will appear in the Test Dashboard tab in the UI.
+---
+
+## Automated Testing with Playwright
+
+To install Playwright:
+
+```bash
+npx playwright install
+```
+
+---
+
+## Tech Stack
+
+- **Frontend:** React.js
+- **Backend:** Node.js / Express, SQLite
+- **Testing:** Playwright
+
+---
+
+## Project Structure
+
+```
+/client                 # React frontend  
+├── /src
+│   └── /components     # Reusable UI components and styles
+│       └── ...         # Add more components here
+
+/server                 # Backend server  
+├── cache.db            # Local SQLite database file
+├── db.ts               # DB connection logic
+├── server.ts           # API entry point
+└── /routes             # All backend route handlers
+    └── ...             # Add more routes here
+
+/tests                  # Automated tests
+└── ...                 # Add more tests here
+```

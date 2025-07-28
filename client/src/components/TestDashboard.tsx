@@ -61,10 +61,6 @@ const TestDashboard = () => {
                 <strong>Last Run:</strong>{" "}
                 {new Date(test.lastRun).toLocaleString()}
               </p>
-              <p>
-                <strong>Details:</strong>{" "}
-                <span>{test.details}</span>
-              </p>
             </div>
           ))}
         </div>

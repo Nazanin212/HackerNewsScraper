@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import './TopStories.css';
 
-type Story = {
+type Article = {
+  id: string;
   title: string;
   url: string;
-  score: string;
-  user: string;
-  comments: string;
-  id?: string | number;
+  author: string;
+  points: string;
+  content: string;
+  created_at: string;
 };
 
 const TopStories: React.FC = () => {
-  const [stories, setStories] = useState<Story[]>([]);
+  const [stories, setStories] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -20,9 +21,11 @@ const TopStories: React.FC = () => {
     setError(null);
 
     try {
-      const res = await fetch('/top-stories');
+      const res = await fetch('/api/articles');
+    const text = await res.text();
+    console.log('Raw response text:', text);
+    const data = JSON.parse(text);
       if (!res.ok) throw new Error(`Failed to fetch: ${res.statusText}`);
-      const data = await res.json();
       setStories(data);
     } catch (err: any) {
       console.error('Fetch error:', err);
@@ -60,9 +63,8 @@ const TopStories: React.FC = () => {
                   {story.title}
                 </a>
                 <div>
-                  <span>{story.score}</span> |{' '}
-                  <span>by {story.user || 'unknown'}</span> |{' '}
-                  <span>{story.comments}</span>
+                  <span>{story.points}</span> |{' '}
+                  <span>by {story.author	 || 'unknown'}</span> |{' '}
                 </div>
               </li>
             ))

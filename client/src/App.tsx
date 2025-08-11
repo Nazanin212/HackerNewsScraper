@@ -36,8 +36,6 @@ function App() {
           Hacker News Hub
         </button>
 
-        <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
-
         <div className="header-actions">
           <label className="toggle-switch" aria-label="Toggle dark mode">
             <input

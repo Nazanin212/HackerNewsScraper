@@ -20,7 +20,6 @@ const TestDashboard = () => {
         const res = await fetch("/tests"); 
         if (!res.ok) throw new Error("Failed to fetch test data");
         const data = await res.json();
-        console.log(data);
         setTests(data);
       } catch (err: any) {
         setError(err.message || "Unknown error");

@@ -1,13 +1,10 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const better_sqlite3_1 = __importDefault(require("better-sqlite3"));
-const path_1 = __importDefault(require("path"));
-const dbPath = path_1.default.resolve(__dirname, '../data/app.db');
-const db = new better_sqlite3_1.default(dbPath);
-console.log("[DB] Connected to db: ");
+import Database from 'better-sqlite3';
+import path from 'path';
+
+const dbPath = path.resolve(__dirname, '../data/app.db');
+const db = new Database(dbPath);
+console.log("[DB] Connected to db: ")
+
 // Create tables if they don't exist
 db.exec(`
     CREATE TABLE IF NOT EXISTS articles (
@@ -48,4 +45,5 @@ db.exec(`
     FOREIGN KEY(tag_id) REFERENCES tags(id)
   );
   `);
-exports.default = db;
+
+export default db;

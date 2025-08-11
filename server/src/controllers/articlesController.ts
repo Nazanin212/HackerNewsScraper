@@ -7,6 +7,7 @@ export const getArticles = (req: Request, res: Response) => {
     SELECT 
       a.id, 
       a.title, 
+      a.url, 
       substr(a.content, 1, 100) || '...' AS preview, 
       a.author,
       a.points,

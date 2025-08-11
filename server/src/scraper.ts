@@ -14,14 +14,15 @@ interface HNItem {
   type?: string;   // "story" or "comment"
 }
 
-interface Article {
-  id: number;
-  title: string;
-  url: string;
-  author: string;
-  points: number;
-  created_at: string;
-}
+type Article = {
+    id: string;
+    title: string;
+    url: string;
+    author: string;
+    points: number;
+    content: string;
+    created_at: string;
+};
 
 interface Comment {
   id: number;
@@ -59,7 +60,7 @@ export async function fetchAndSaveHNData() {
 
     // Prepare articles for DB insert
     const articles: Article[] = stories.map(story => ({
-        id: story.id,
+        id: story.id.toString(),
         title: story.title || '[No Title]',
         url: story.url || '',
         author: story.by || 'unknown',
@@ -93,8 +94,8 @@ export async function fetchAndSaveHNData() {
     console.log("[SCRAPER] Updating database")
     // Save articles & comments into SQLite in a transaction
     const insertArticles = db.prepare(`
-      INSERT OR REPLACE INTO articles (id, title, url, author, points, created_at)
-      VALUES (?, ?, ?, ?, ?, ?)
+        INSERT OR REPLACE INTO articles (id, title, url, author, points, content, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
     `);
 
     const insertComments = db.prepare(`
@@ -103,15 +104,28 @@ export async function fetchAndSaveHNData() {
     `);
 
     const insertMany = db.transaction(() => {
-      for (const article of articles) {
-        insertArticles.run(article.id, article.title, article.url, article.author, article.points, article.created_at);
-      }
-      for (const comment of comments) {
-        insertComments.run(comment.id, comment.article_id, comment.text, comment.author, comment.created_at);
-      }
+        for (const article of articles) {
+          insertArticles.run(
+            article.id,
+            article.title,
+            article.url,
+            article.author,
+            article.points,
+            article.content,
+            article.created_at
+          );
+        }
+        for (const comment of comments) {
+          insertComments.run(comment.id, comment.article_id, comment.text, comment.author, comment.created_at);
+        }
     });
 
     insertMany();
+
+    // Delete articles NOT in current top stories
+    const placeholders = topStoryIds.map(() => '?').join(',');
+    db.prepare(`DELETE FROM articles WHERE id NOT IN (${placeholders})`).run(...topStoryIds);
+
 
     console.log('HN data refreshed with articles and comment previews');
   } catch (error) {

@@ -24,13 +24,13 @@ db.exec(`
     text TEXT NOT NULL,
     author TEXT,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY(article_id) REFERENCES articles(id)
+    FOREIGN KEY(article_id) REFERENCES articles(id) ON DELETE CASCADE
   );
   
   CREATE TABLE IF NOT EXISTS bookmarks (
     id INTEGER PRIMARY KEY,
     article_id INTEGER,
-    FOREIGN KEY(article_id) REFERENCES articles(id)
+    FOREIGN KEY(article_id) REFERENCES articles(id) ON DELETE CASCADE
   );
   
   CREATE TABLE IF NOT EXISTS tags (
@@ -41,8 +41,8 @@ db.exec(`
   CREATE TABLE IF NOT EXISTS article_tags (
     article_id INTEGER,
     tag_id INTEGER,
-    FOREIGN KEY(article_id) REFERENCES articles(id),
-    FOREIGN KEY(tag_id) REFERENCES tags(id)
+    FOREIGN KEY(article_id) REFERENCES articles(id) ON DELETE CASCADE,
+    FOREIGN KEY(tag_id) REFERENCES tags(id) ON DELETE CASCADE
   );
   `);
 

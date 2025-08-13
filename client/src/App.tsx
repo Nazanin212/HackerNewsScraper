@@ -1,33 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import './App.css';
-import TabNavigation from './components/TabNavigation';
-import About from './components/About';
 import TopStories from './components/TopStories';
-import TestDashboard from './components/TestDashboard';
-//import KeywordSearch from './components/KeywordSearch';
+import { useTheme } from './components/ThemeContext';
 
 
 function App() {
-  const [activeTab, setActiveTab] = useState<string | null>(null);
-  const [darkMode, setDarkMode] = useState(false);
+  const { darkMode, toggleDarkMode } = useTheme();
 
   useEffect(() => {
     document.body.classList.toggle('dark', darkMode);
   }, [darkMode]);
-
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'About':
-        return <About />;        
-      case 'Test Dashboard':
-        return <TestDashboard />;
-      case 'Keyword Search':
-        return null;
-        //return <KeywordSearch />;
-      default:
-        return null;
-    }
-  };
 
   return (
     <div className="App">
@@ -41,7 +23,7 @@ function App() {
             <input
               type="checkbox"
               checked={darkMode}
-              onChange={() => setDarkMode(prev => !prev)}
+              onChange={toggleDarkMode}
             />
             <span className="slider">
               <span className="icon light"></span>
@@ -59,13 +41,9 @@ function App() {
 
       <main className="app-body">
         <section className="tab-content">
-          {!activeTab ? (
           <div>
             <TopStories />
           </div>
-          ) : (
-            renderContent()
-          )}
         </section>
       </main>
     </div>
